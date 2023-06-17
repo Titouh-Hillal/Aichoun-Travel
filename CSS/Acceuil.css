@@ -1,0 +1,79 @@
+*{
+  font-family: 'Open Sans', sans-serif;
+}
+.navbar .navbar-nav .nav-item a{
+    padding: 50px;
+}
+.carousel-item{
+  height: 38rem;
+  position: relative;
+}
+.slider{
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+padding-bottom: 50px;
+}
+.cc1{
+  background-image: url('../Img/plane.jpeg');
+}
+.cc2{
+  background-image: url('../Img/hotels.jpg');
+}
+.cc3{
+  background-image: url('../Img/vols&hotels.jpg');
+}
+.cc1 , .cc2, .cc3{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.image{
+    height: 140vh;
+    background-image: url("../Img/plane.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center;
+    position: relative;
+}
+#navbar-color,#footer-color{
+    background-color: rgb(3, 47, 109);
+}
+#dropdownMenuButton1,#connexion_button{
+    border-radius: 13px 13px 13px 13px;
+}
+#form{
+  position: absolute;
+  right: 15%;
+  top: 15%;
+  height: 370px;
+  width: 900px;
+  margin: 20px;
+  max-width: 900px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 5px 10px 8px #EBECE7;
+}
+@media only screen and (max-width: 600px){
+    #form{
+      height: 650px;
+      width: 200px;
+    }
+  }
+@media only screen and (min-width: 600px)and (max-width: 992px){
+    #form{
+      height: 600px;
+      width: 400px;
+    }
+} 
+#arrows{
+    border-radius: 50%;
+    width: 60px;
+}
+footer{
+    position: sticky; 
+    top: 100%;
+}

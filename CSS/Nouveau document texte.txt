@@ -1,0 +1,10 @@
+body{
+    height :2000px;
+}
+.navbar .navbar-nav .nav-item a{
+    padding: 50px;
+}
+footer{
+    position: sticky; 
+    top: 100%;
+}
