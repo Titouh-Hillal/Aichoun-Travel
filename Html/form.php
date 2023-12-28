@@ -37,7 +37,7 @@ session_start();
               <a class="nav-link" href="vols&hotels.php" tabindex="-1" aria-disabled="true">Vols & Hotels</a>
             </li>
           </ul>
-          <?php if(isset($_SESSION["id_client"])): ?>
+          <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -52,8 +52,6 @@ session_start();
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                    <li><a class="dropdown-item" href="#">mes reservation</a></li>
                     <li><a class="dropdown-item" href="../php/deconnexion.php">déconnecter</a></li>
               </ul>
             </div>
@@ -71,7 +69,7 @@ session_start();
     
 
     <main>
-      <?php if(isset($_SESSION["id_client"])): ?>
+      <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
         <section>
           <div class="modal-dialog" role="document">
             <div class="modal-content rounded-4 shadow">
@@ -119,18 +117,9 @@ session_start();
                       </div>
                     </div>
                   </div>
-                  <!--<div class="row">
-                    <div class="col">
-                      <div class="form-floating mb-3">
-                        <input type="date" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">date d'expédition du passeport</label>
-                        </div>
-                      </div>  
-                  </div>-->
-                    
                   <div class="row">
                     <div class="col">
-                      <button type="submit" class="btn btn-primary 1">Soumettre</button>
+                      <button type="submit" class="btn btn-primary 1"> Soumettre</button>
                       <button type="reset" class="btn btn-primary 2">Réinitialiser</button>
                     </div>
                   </div>
@@ -151,7 +140,7 @@ session_start();
                   <!-- Add a hidden input field for the card ID -->
                   <input type="hidden" name="cardId" value="<?php echo $_GET['id']; ?>">
                   <div class="row">
-                    <!-- Rest of your form fields -->
+                    
                   </div>
                   <div class="row">
                     <div class="col">
@@ -182,7 +171,7 @@ session_start();
               Aichoun Travel
             </h5>
             <p>
-              AICHOUN Tourism and Travel Agency est l'une des plus importantes entreprises touristiques en Algérie Avec plusieurs activités qui contribuent à la dynamisation du développement touristique en Algérie. Aichoun Tourism and Travel Agency, une société par actions, créée en 2016 avec un capital social initial fixé à100 000 000 DZD. Le nombre de ses employés a atteint 12, répartis entre ses différentes branches et directions.
+              AICHOUN Travel est une entreprise touristique majeure en Algérie. Elle joue un rôle important dans le développement touristique du pays depuis sa création en 2016.
             </p>
 
           </div>

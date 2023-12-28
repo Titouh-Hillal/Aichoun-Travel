@@ -41,7 +41,7 @@ $result = mysqli_query($mysqli,$query);
               <a class="nav-link active" href="vols&hotels.php" tabindex="-1" aria-disabled="true">Vols & Hotels</a>
             </li>
           </ul>
-          <?php if(isset($_SESSION["id_client"])): ?>
+          <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -56,8 +56,6 @@ $result = mysqli_query($mysqli,$query);
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                    <li><a class="dropdown-item" href="#">mes reservation</a></li>
                     <li><a class="dropdown-item" href="../php/deconnexion.php">déconnecter</a></li>
               </ul>
             </div>
@@ -189,25 +187,28 @@ $result = mysqli_query($mysqli,$query);
             <?php
             if (mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_assoc($result)) {
+                $cardId = $row['code_service']; // Store the ID in a variable
+                
                 ?>
                 <div class="col-md-4 mb-4">
-                  <div class="card">
+                  <div class="card" data-id="<?php echo $cardId; ?>">
                     <?php
                     $imagePath = $row['image'];
                     echo '<img src="../img/' . $imagePath . '" alt="Image" >'; ?>
                     <div class="card-body">
                       <h5 class="card-title"><?php echo $row['localisation']; ?></h5>
-                      <h4><?php echo $row['prix']; ?></h4>
+                      <h4><?php echo $row['prix']; ?> DZD</h4>
                       <p class="card-text"><?php echo $row['details']; ?></p>
-                      <?php if(isset($_SESSION["id_client"])): ?>
-                      <a href="form.php" class="btn btn-primary">voir les détails</a>
+                      <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
+                      
+                      <a href="form.php?id=<?php echo $cardId; ?>" class="btn btn-primary">voir les détails</a>
                       <?php else: ?>
-                        <a href="Connexion.html" class="btn btn-primary">voir les détails</a>
-                        <?php endif; ?>
+                      <a href="Connexion.html" class="btn btn-primary">Réservez</a>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
-              <?php
+                <?php
               }
             } else {
               // Display a message if there are no offers available
@@ -233,7 +234,7 @@ $result = mysqli_query($mysqli,$query);
               Aichoun Travel
             </h5>
             <p>
-              AICHOUN Tourism and Travel Agency est l'une des plus importantes entreprises touristiques en Algérie Avec plusieurs activités qui contribuent à la dynamisation du développement touristique en Algérie. Aichoun Tourism and Travel Agency, une société par actions, créée en 2016 avec un capital social initial fixé à100 000 000 DZD. Le nombre de ses employés a atteint 12, répartis entre ses différentes branches et directions.
+              AICHOUN Travel est une entreprise touristique majeure en Algérie. Elle joue un rôle important dans le développement touristique du pays depuis sa création en 2016.
             </p>
 
           </div>

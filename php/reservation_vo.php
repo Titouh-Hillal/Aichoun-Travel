@@ -30,4 +30,7 @@
     // Close the statement and database connection
     $stmt->close();
     $mysqli->close();
+
+    header("Location: ../Html/Acceuil.php");
+    exit;
 ?>

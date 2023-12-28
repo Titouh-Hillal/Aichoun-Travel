@@ -3,15 +3,20 @@
     session_start();
 
     require_once('../php/base_de_données.php');
+    
+    mysqli_set_charset($mysqli, 'utf8');
 
-    $charset = mysqli_character_set_name($mysqli);
-    echo "The current character set is: $charset";
-
-    $query = "SELECT client.id_client, client.nom, client.prenom, client.date_naissance, client.num_passport, client.email, client.tel, `réservation`.id_reservation, `réservation`.code_service
+    $query = "SELECT client.id_client, client.nom, client.prenom, client.date_naissance, client.num_passport, client.email, client.tel, réservation.id_reservation, réservation.code_service
               FROM client
-              FULL JOIN `réservation` ON client.id_client = `réservation`.id_client";
-
+              INNER JOIN réservation ON client.id_client = réservation.id_client ";
+    $query1="SELECT * FROM client";
+    
     $result = mysqli_query($mysqli, $query);
+    $result1= mysqli_query($mysqli, $query1);
+
+    if (!$result) {
+      die("Error: " . mysqli_error($mysqli));
+  }
 
 ?>
 <!doctype html>
@@ -41,7 +46,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item" id="vols">
-              <a class="nav-link" aria-current="page" href="ajouter_voyage.php">Ajouter un offres</a>
+              <a class="nav-link" aria-current="page" href="ajouter_voyage.php">Ajouter une offres</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="liste_clients_admin.php">Liste des clients</a>
@@ -50,7 +55,7 @@
                 <a class="nav-link" href="message_admin.php">Messages</a>
               </li>
           </ul>
-          <?php if(isset($_SESSION["id_admin"])): ?>
+          <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -65,7 +70,6 @@
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
                     <li><a class="dropdown-item" href="../php/deconnexion_admin.php">déconnecter</a></li>
               </ul>
             </div>
@@ -90,7 +94,65 @@
             </div>
         </section>
         <section>
-        <?php if(isset($_SESSION["id_admin"])): ?>
+        <?php if(isset($_SESSION["id_admin"]) && $_SESSION["role"] === "admin"): ?>
+            <div class="container">
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">id client</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prenom</th>
+                            <th scope="col">Date de naissance</th>
+                            <th scope="col">Numéro Passeport</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Telephone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <!--<th scope="row">1</th>
+                            <td>Mansouri</td>
+                            <td>Sabrina</td>
+                            <td>02/01/2002</td>
+                            <td>5020050</td>
+                            <td>sabrina@gmail.com</td>
+                            <td>0708851155</td>-->
+                            <?php
+                              while ($row1 = mysqli_fetch_assoc($result1)) 
+                              { 
+                            ?>
+                            <td><?php echo $row1['id_client']; ?></td>
+                            <td><?php echo $row1['nom']; ?></td>
+                            <td><?php echo $row1['prenom']; ?></td>
+                            <td><?php echo $row1['date_naissance']; ?></td>
+                            <td><?php echo $row1['num_passport']; ?></td>
+                            <td><?php echo $row1['email']; ?></td>
+                            <td><?php echo $row1['tel']; ?></td>
+                        </tr>
+                            <?php 
+
+
+                              }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php else:?>
+          <div class="d-flex align-items-start justify-content-center" style="min-height: 10vh;">
+                <h4 style="color:red;">Vous devez vous connecter</h4>
+          </div>
+        <?php endif; ?>
+        </section>
+        <hr>
+        <section>
+            <div class="d-flex align-items-start justify-content-center" style="min-height: 10vh;">
+                <h1 id="bienvenue-admin">Liste des Clients réservés</h1>
+            </div>
+        </section>
+        <section>
+        <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
             <div class="container">
                 <div class="row">
                     <table class="table table-bordered">
@@ -120,15 +182,15 @@
                               while ($row = mysqli_fetch_assoc($result)) 
                               { 
                             ?>
-                            <td><?php echo $row['client.id_client']; ?></td>
-                            <td><?php echo $row['client.nom']; ?></td>
-                            <td><?php echo $row['client.prenom']; ?></td>
-                            <td><?php echo $row['client.date_naissance']; ?></td>
-                            <td><?php echo $row['client.num_passport']; ?></td>
-                            <td><?php echo $row['client.email']; ?></td>
-                            <td><?php echo $row['client.tel']; ?></td>
-                            <td><?php echo $row['réservation.id_reservation']; ?></td>
-                            <td><?php echo $row['réservation.code_service']; ?></td>
+                            <td><?php echo $row['id_client']; ?></td>
+                            <td><?php echo $row['nom']; ?></td>
+                            <td><?php echo $row['prenom']; ?></td>
+                            <td><?php echo $row['date_naissance']; ?></td>
+                            <td><?php echo $row['num_passport']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['tel']; ?></td>
+                            <td><?php echo $row['id_reservation']; ?></td>
+                            <td><?php echo $row['code_service']; ?></td>
                         </tr>
                             <?php 
 
@@ -147,7 +209,6 @@
         </section>
     </main>
 
-    <script src="../javascript/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item" id="vols">
-              <a class="nav-link" aria-current="page" href="ajouter_voyage.php">Ajouter un offres</a>
+              <a class="nav-link" aria-current="page" href="ajouter_voyage.php">Ajouter une offre</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="liste_clients_admin.php">Liste des clients</a>
@@ -39,7 +39,7 @@
               </li>
           </ul>
 
-          <?php if(isset($_SESSION["id_admin"])): ?>
+          <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -54,7 +54,6 @@
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
                 <li><a class="dropdown-item" href="../php/deconnexion_admin.php">déconnecter</a></li>
               </ul>
             </div>
@@ -73,7 +72,7 @@
 
     <main>
         <section>
-          <?php if(isset($_SESSION["id_admin"])): ?>
+          <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
             <div class="d-flex align-items-start justify-content-center" style="min-height: 10vh;">
                 <h2 id="bienvenue-admin">Bienvenue <?php echo $_SESSION["prenom"];?></h2>
             </div>

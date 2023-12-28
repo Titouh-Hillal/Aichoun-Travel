@@ -38,7 +38,7 @@
               <a class="nav-link" href="vols&hotels.php" tabindex="-1" aria-disabled="true">Vols & Hotels</a>
             </li>
           </ul>
-          <?php if(isset($_SESSION["id_client"])): ?>
+          <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -53,8 +53,6 @@
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                    <li><a class="dropdown-item" href="#">mes reservation</a></li>
                     <li><a class="dropdown-item" href="../php/deconnexion.php">déconnecter</a></li>
               </ul>
             </div>
@@ -178,7 +176,7 @@
               Aichoun Travel
             </h5>
             <p>
-              here in aichoun travel website you can reserve a flight , hotel tickets.
+              AICHOUN Travel est une entreprise touristique majeure en Algérie. Elle joue un rôle important dans le développement touristique du pays depuis sa création en 2016.
             </p>
 
           </div>

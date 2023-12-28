@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once('../php/base_de_données.php');
+
+mysqli_set_charset($mysqli, 'utf8');
 $query = "select * from service";
 $result = mysqli_query($mysqli, $query);
 
@@ -8,6 +10,11 @@ if (isset($_POST['service_id'])) {
     $serviceId = $_POST['service_id'];
 
     // Perform the deletion query
+    $deleteReservationsStmt = $mysqli->prepare("DELETE FROM réservation WHERE code_service = ?");
+    $deleteReservationsStmt->bind_param("i", $serviceId);
+    $deleteReservationsStmt->execute();
+
+
     $deleteStmt = $mysqli->prepare("DELETE FROM service WHERE code_service = ?");
     $deleteStmt->bind_param("i", $serviceId);
     $deleteStmt->execute();
@@ -51,7 +58,7 @@ if (isset($_POST['service_id'])) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item" id="vols">
-                        <a class="nav-link active" aria-current="page" href="ajouter_voyage.php">Ajouter un offres</a>
+                        <a class="nav-link active" aria-current="page" href="ajouter_voyage.php">Ajouter une offres</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="liste_clients_admin.php">Liste des clients</a>
@@ -60,7 +67,7 @@ if (isset($_POST['service_id'])) {
                         <a class="nav-link" href="message_admin.php">Messages</a>
                     </li>
                 </ul>
-                <?php if (isset($_SESSION["id_admin"])): ?>
+                <?php if(isset($_SESSION["id_admin"]) && $_SESSION["role"] === "admin"): ?>
                 <div class="d-flex ms-auto">
                     <div class="btn-group dropstart">
                         <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -70,14 +77,13 @@ if (isset($_POST['service_id'])) {
                                 ?>
                             </p>
                         </button>
-                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" id="navbar-color"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                            <li><a class="dropdown-item" href="../php/deconnexion_admin.php">Déconnecter</a></li>
-                        </ul>
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle"
+                                id="navbar-color" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="../php/deconnexion_admin.php">déconnecter</a></li>
+                            </ul>
                     </div>
                 </div>
                 <?php else: ?>
@@ -101,7 +107,7 @@ if (isset($_POST['service_id'])) {
             </div>
         </section>
         <section>
-            <?php if (isset($_SESSION["id_admin"])): ?>
+        <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
             <div class="container">
                 <div class="row">
                     <table class="table table-bordered">
@@ -155,7 +161,7 @@ if (isset($_POST['service_id'])) {
         </section>
         <hr>
         <section>
-            <?php if (isset($_SESSION["id_admin"])): ?>
+        <?php if(isset($_SESSION["id_admin"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
             <div class="modal-dialog" role="document">
                 <div class="modal-content rounded-4 shadow">
                     <div class="modal-header p-5 pb-4 border-bottom-0">
@@ -228,6 +234,7 @@ if (isset($_POST['service_id'])) {
     </main>
 
     <script src="../Js/admin.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pzjw9eINnWN/iFQU+lMMhUqJLl4JfO34y1Smvwp6gjMIWhOL+JEmY0IxtQ3vO6jN"
         crossorigin="anonymous"></script>

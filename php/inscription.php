@@ -11,7 +11,7 @@
 
     if( empty($nom) || empty($prenom) || empty($date_de_naissance) || empty($email) || empty($tel) || empty($num_passport) ||  empty($password) ){
 
-        die("we need all the informations");
+        echo '<script>alert("We need all");</script>';
 
     }
 
@@ -48,21 +48,7 @@
     }
 
     $stmt->bind_param("sssssss",$nom,$prenom,$date_de_naissance,$num_passport,$email,$tel,$password_hash);
-/*
-    if($stmt->execute()){
-        echo "signup succesfully";
-    }
-    else{
-        if($mysqli->errno === 1062){
-            die("email already taken ");
-        }
-        else {
-            die($mysqli->error . " " . $mysqli->errno);
-        }
-        
-    }*/
-    //
-    
+
     try {
         
         $stmt->execute();
@@ -77,14 +63,13 @@
             echo "An error occurred while processing your request. Please try again later.";
         }
     }
-
-    header("Location: ../Html/Connexion.html");
-    exit;
+    if (empty($nom) || empty($prenom) || empty($date_de_naissance) || empty($email) || empty($tel) || empty($num_passport) ||  empty($password)) {
+        header("Location: ../Html/inscription.html");
+        exit;
+    }
+    else{
+        header("Location: ../Html/Connexion.html");
+        exit;
+    }
     
-    
-
-
-    //var_dump($password_hash);
-
-    //print_r($_POST);
 ?>

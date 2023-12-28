@@ -20,7 +20,7 @@
                 $_SESSION['id_admin'] = $client['id_admin'];
                 $_SESSION['prenom'] = $client['prenom'];
                 $_SESSION['nom'] = $client['nom'];
-    
+                $_SESSION["role"] = "admin";
     
                 header("Location: ../Html/admin.php");
                 exit;

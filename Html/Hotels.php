@@ -23,7 +23,7 @@ $result = mysqli_query($mysqli,$query);
   </head>
   <body>
     
-    <nav class="navbar navbar-expand-md navbar-dark shadow-sm pt-0 pb-0" id="navbar-color">
+  <nav class="navbar navbar-expand-md navbar-dark shadow-sm pt-0 pb-0" id="navbar-color">
       <div class="container-fluid">
         <a class="navbar-brand " href="Acceuil.php"><img src="../Img/aichoun_logo_2.png" alt="" height="80px" width="80px">Aichoun Travel</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,10 +38,10 @@ $result = mysqli_query($mysqli,$query);
               <a class="nav-link active" href="Hotels.php">Hotels</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="vols&hotels.php" tabindex="-1" aria-disabled="true">Vols & Hotels</a>
+              <a class="nav-link " href="vols&hotels.php" tabindex="-1" aria-disabled="true">Vols & Hotels</a>
             </li>
           </ul>
-          <?php if(isset($_SESSION["id_client"])): ?>
+          <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
           <div class="d-flex ms-auto"> 
             <div class="btn-group dropstart">
               <button class="btn btn-secondary" type="button" id="navbar-color">
@@ -56,8 +56,6 @@ $result = mysqli_query($mysqli,$query);
                 <span class="visually-hidden">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                    <li><a class="dropdown-item" href="#">mes reservation</a></li>
                     <li><a class="dropdown-item" href="../php/deconnexion.php">déconnecter</a></li>
               </ul>
             </div>
@@ -72,8 +70,6 @@ $result = mysqli_query($mysqli,$query);
         </div>
       </div>
     </nav>
-    
-
     <main>
       <section>
         <div class="image">
@@ -81,10 +77,10 @@ $result = mysqli_query($mysqli,$query);
             <!--input fields-->
             <div class="row g-2">
               <div class="row g-2">
-                <div class="col-md">
+              <div class="col-md">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInputGrid">Ville</label>
+                    <label for="floatingInputGrid"> Ville</label>
                   </div>
                 </div>
               </div>
@@ -164,7 +160,7 @@ $result = mysqli_query($mysqli,$query);
               </div>
             </div>
             <br>
-            <button class="btn btn-primary" type="submit"><a href="reshotel.php" style="text-decoration: none; color: white;">Rechercher Hotels</a></button>
+            <button class="btn btn-primary" type="submit">Rechercher hotels</button>
           </form> 
           
         </div>
@@ -182,25 +178,28 @@ $result = mysqli_query($mysqli,$query);
             <?php
             if (mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_assoc($result)) {
+                $cardId = $row['code_service']; // Store the ID in a variable
+                
                 ?>
                 <div class="col-md-4 mb-4">
-                  <div class="card">
+                  <div class="card" data-id="<?php echo $cardId; ?>">
                     <?php
                     $imagePath = $row['image'];
                     echo '<img src="../img/' . $imagePath . '" alt="Image" >'; ?>
                     <div class="card-body">
                       <h5 class="card-title"><?php echo $row['localisation']; ?></h5>
-                      <h4><?php echo $row['prix']; ?></h4>
+                      <h4><?php echo $row['prix']; ?> DZD  </h4>
                       <p class="card-text"><?php echo $row['details']; ?></p>
-                      <?php if(isset($_SESSION["id_client"])): ?>
-                      <a href="form.php" class="btn btn-primary">voir les détails</a>
+                      <?php if(isset($_SESSION["id_client"]) && isset($_SESSION["role"]) && $_SESSION["role"] === "client"): ?>
+                      
+                      <a href="form.php?id=<?php echo $cardId; ?>" class="btn btn-primary">voir les détails</a>
                       <?php else: ?>
-                        <a href="Connexion.html" class="btn btn-primary">voir les détails</a>
-                        <?php endif; ?>
+                      <a href="Connexion.html" class="btn btn-primary">Réservez</a>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
-              <?php
+                <?php
               }
             } else {
               // Display a message if there are no offers available
@@ -212,6 +211,7 @@ $result = mysqli_query($mysqli,$query);
       </section>
         
     </main>
+
     <footer class="scroll-bottom text-white pt-5 pb-4 " id="footer-color">
 
       <div class="container text-center text-md-left">
@@ -226,7 +226,7 @@ $result = mysqli_query($mysqli,$query);
               Aichoun Travel
             </h5>
             <p>
-              AICHOUN Tourism and Travel Agency est l'une des plus importantes entreprises touristiques en Algérie Avec plusieurs activités qui contribuent à la dynamisation du développement touristique en Algérie. Aichoun Tourism and Travel Agency, une société par actions, créée en 2016 avec un capital social initial fixé à100 000 000 DZD. Le nombre de ses employés a atteint 12, répartis entre ses différentes branches et directions.
+              AICHOUN Travel est une entreprise touristique majeure en Algérie. Elle joue un rôle important dans le développement touristique du pays depuis sa création en 2016.
             </p>
 
           </div>
@@ -340,12 +340,6 @@ $result = mysqli_query($mysqli,$query);
       </div>
 
     </footer>
-    <script>
-      function redirectToReshotel() {
-        window.location.href = "reshotel.php";
-      }
-    </script>
-    <script src="../javascript/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-yqzq+Q5bYhlQnDJvVmGSM6aCqZiqw5Syo5sQaaKximFwunF0oRI0oRmwXOfs7m8Q" crossorigin="anonymous"></script>
   </body>
 </html>

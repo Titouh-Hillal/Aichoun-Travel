@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             $_SESSION['tel'] = $client['tel'];
             $_SESSION['email'] = $client['email'];
             $_SESSION['num_passport'] = $client['num_passport'];
-
+            $_SESSION["role"] = "client";
 
             header("Location: ../Html/Acceuil.php");
             exit;
